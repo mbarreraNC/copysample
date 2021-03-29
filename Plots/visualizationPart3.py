@@ -74,9 +74,9 @@ data_bubblechart = [
 
 # Heatmap - Mauricio Barrera
 
-data_heatmap = [go.Heatmap(x=df2['Day'],
-                           y=df2['WeekofMonth'],
-                           z=df2['Recovered'].values.tolist(),
+data_heatmap = [go.Heatmap(x=df4['day'],
+                           y=df4['month'],
+                           z=df4['record_max_temp'].values.tolist(),
                            colorscale='Jet')]
 
 # Layout
@@ -168,12 +168,13 @@ app.layout = html.Div(children=[
     html.Hr(style={'color': '#7FDBFF'}),
     html.H3('Heat map', style={'color': '#df1e56'}),
     html.Div(
-        'This heat map represent the Corona Virus recovered cases of all reported cases per day of week and week of month.'),
+        'Heat Map Represent Max Temperature on Day of Week and Month of Year.'),
     dcc.Graph(id='graph7',
               figure={
                   'data': data_heatmap,
-                  'layout': go.Layout(title='Corona Virus Recovered Cases',
-                                      xaxis={'title': 'Day of Week'}, yaxis={'title': 'Week of Month'}, height=325)
+                  'layout': go.Layout(title='Max Temperature On Day of Week',
+                                      xaxis={'title': 'Day of Week'}, yaxis={'title': 'Week of Month'}
+                                      )
               }
               )
 ])
