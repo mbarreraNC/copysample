@@ -8,16 +8,13 @@ import plotly.graph_objs as go
 # Load CSV file from Datasets folder
 df1 = pd.read_csv('../Datasets/CoronavirusTotal.csv')
 df2 = pd.read_csv('../Datasets/CoronaTimeSeries.csv')
-df3 = pd.read_csv('../Datasets/Olympic2016Rio.csv')
-df4 = pd.read_csv('../Datasets/Weather2014-15.csv')
+df3 = pd.read_csv('../Datasets/Weather2014-15.csv')
 
 app = dash.Dash()
 
 # Bar chart data
-
-# barchart_df = df1[df1['Country'] == 'US']
-barchart_df = df3.apply(lambda x: x.str.strip() if x.dtype == "object" else x)
-# sorting values and select first 20
+barchart_df = df1[df1['Country'] == 'US']
+barchart_df = barchart_df.apply(lambda x: x.str.strip() if x.dtype == "object" else x)
 barchart_df = barchart_df.groupby(['State'])['Confirmed'].sum().reset_index()
 barchart_df = barchart_df.sort_values(by=['Confirmed'], ascending=[False]).head(20)
 data_barchart = [go.Bar(x=barchart_df['State'], y=barchart_df['Confirmed'])]
@@ -66,9 +63,9 @@ data_bubblechart = [
 ]
 
 # Heatmap
-data_heatmap = [go.Heatmap(x=df2['Day'],
-                           y=df2['WeekofMonth'],
-                           z=df2['Recovered'].values.tolist(),
+data_heatmap = [go.Heatmap(x=df3['day'],
+                           y=df3['month'],
+                           z=df3['record_max_temp'].values.tolist(),
                            colorscale='Jet')]
 
 # Layout
@@ -160,12 +157,13 @@ app.layout = html.Div(children=[
     html.Hr(style={'color': '#7FDBFF'}),
     html.H3('Heat map', style={'color': '#df1e56'}),
     html.Div(
-        'This heat map represent the Corona Virus recovered cases of all reported cases per day of week and week of month.'),
+        'Heat Map Represent Max Temperature on Day of Week and Month of Year.'),
     dcc.Graph(id='graph7',
               figure={
                   'data': data_heatmap,
-                  'layout': go.Layout(title='Corona Virus Recovered Cases',
-                                      xaxis={'title': 'Day of Week'}, yaxis={'title': 'Week of Month'})
+                  'layout': go.Layout(title='Max Temperature On Day of Week',
+                                      xaxis={'title': 'Day of Week'}, yaxis={'title': 'Week of Month'}
+                                      )
               }
               )
 ])
